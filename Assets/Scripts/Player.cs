@@ -36,12 +36,12 @@ public class Player : MonoBehaviour
 
         void FixedUpdate()
         {
-            if (_thrusting == false )
+            if (_thrusting == true )
             {
                 _shipRb.AddForce(this.transform.up * this.Impulse);
             }
             
-            if (_turnDirection == 0.0f) {
+            if (_turnDirection != 0.0f) {
                 _shipRb.AddTorque(_turnDirection * this._turnDirection);
             }
         }
