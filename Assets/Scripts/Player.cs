@@ -1,53 +1,68 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
-    public float Impulse = 1.0f;
+    public new Rigidbody2D rigidbody { get; private set; }
+    public Bullet bulletPrefab;
+    public float thrustSpeed = 1f;
+    public bool thrusting { get; private set; }
 
-    public float MaxImpulse = 1.0f;
+    public float turnDirection { get; private set; } = 0f;
+    public float rotationSpeed = 0.1f;
 
-    private Rigidbody2D _shipRb;
+    public float respawnDelay = 3f;
+    public float respawnInvulnerability = 3f;
 
-    private bool _thrusting;
-    [SerializeField]
-    private float _turnDirection = 1.0f;
-
-
-    void Awake()
+    private void Awake()
     {
-        _shipRb = GetComponent<Rigidbody2D>();
+        rigidbody = GetComponent<Rigidbody2D>();
     }
-    
-    void Update()
-    {
-        _thrusting = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
 
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
-            _turnDirection = 1.0f;
+    
+
+    private void Update()
+    {
+        thrusting = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
+
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        {
+            turnDirection = 1f;
         }
         else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
-            _turnDirection = -1.0f;
-        } else
-        {
-            _turnDirection = 0.0f;
+            turnDirection = -1f;
         }
-        
-
-        void FixedUpdate()
+        else
         {
-            if (_thrusting == true )
-            {
-                _shipRb.AddForce(this.transform.up * this.Impulse);
-            }
-            
-            if (_turnDirection != 0.0f) {
-                _shipRb.AddTorque(_turnDirection * this._turnDirection);
-            }
+            turnDirection = 0f;
         }
 
-
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+        {
+            Shoot();
+        }
 
 
     }
+
+    private void FixedUpdate()
+    {
+        if (thrusting)
+        {
+            rigidbody.AddForce(transform.up * thrustSpeed);
+        }
+
+        if (turnDirection != 0f)
+        {
+            rigidbody.AddTorque(rotationSpeed * turnDirection);
+        }
+    }
+    void Shoot()
+    {
+        Bullet bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
+        bullet.Project(transform.up);
+    }
+
+
 }
