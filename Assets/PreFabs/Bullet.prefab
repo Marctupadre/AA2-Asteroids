@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 5400898044857570744}
   - component: {fileID: -1623685084281231679}
   m_Layer: 0
-  m_Name: Disparo
-  m_TagString: Untagged
+  m_Name: Bullet
+  m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -146,3 +146,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97eac84c33c34a2458ca480b710df7ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 500
+  maxLifetime: 5
